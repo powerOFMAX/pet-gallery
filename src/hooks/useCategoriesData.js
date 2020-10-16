@@ -7,19 +7,17 @@ export function useCategoriesData () {
 
   useEffect(function () {
     setLoading(true)
-    setTimeout(function () {
-      window.fetch('https://test-api-okz6z0yf7.vercel.app/categories')
-        .then(res => res.json())
-        .then(categories => {
-          setCategoriesData(categories)
-        })
-        .catch(err => {
-          setError(err)
-        })
-        .finally(() => {
-          setLoading(false)
-        })
-    }, 2000)
+    window.fetch('https://test-api-okz6z0yf7.vercel.app/categories')
+      .then(res => res.json())
+      .then(categories => {
+        setCategoriesData(categories)
+      })
+      .catch(err => {
+        setError(err)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
   }, [])
 
   return { error, loading, categories }
