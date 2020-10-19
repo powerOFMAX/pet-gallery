@@ -14,7 +14,23 @@ import { NavBar } from './components/NavBar'
 import Context from './Context'
 
 const client = new ApolloClient({
-  uri: 'https://test-api-okz6z0yf7.vercel.app/graphql'
+  uri: 'https://test-api-okz6z0yf7.vercel.app/graphql',
+  request: operation => {
+    const token = window.sessionStorage.getItem('token')
+    const authorization = token ? `Bearer ${token}` : ''
+    operation.setContext({
+      headers: {
+        authorization
+      }
+    })
+  },
+  onError: error => {
+    const { networkError } = error
+    if (networkError && networkError.result.code === 'invalid_token') {
+      window.sessionStorage.removeItem('token')
+      window.location.href = '/'
+    }
+  }
 })
 
 const App = () => {
