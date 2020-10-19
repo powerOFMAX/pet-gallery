@@ -1,21 +1,15 @@
-import React from 'react'
-import ReactDom from 'react-dom'
-import { GlobalStyle } from './styles/GlobalStyles'
-import { Logo } from './components/Logo'
+import React, { useContext } from 'react'
+import ReactDOM from 'react-dom'
 import ApolloClient from 'apollo-boost'
 import { ApolloProvider } from 'react-apollo'
-import { Router } from '@reach/router'
-import { Home } from './pages/Home'
-import { Detail } from './pages/Detail'
-import { Favs } from './pages/Favs'
-import { User } from './pages/User'
-import { NotRegisteredUser } from './pages/NotRegisteredUser'
-import { NavBar } from './components/NavBar'
 import Context from './Context'
+import { App } from './App'
 
 const client = new ApolloClient({
-  uri: 'https://test-api-okz6z0yf7.vercel.app/graphql',
-  request: operation => {
+  uri:
+    process.env.REACT_APP_ENDPOINT ||
+    'https://test-api-okz6z0yf7.vercel.app/graphql',
+  request: (operation) => {
     const token = window.sessionStorage.getItem('token')
     const authorization = token ? `Bearer ${token}` : ''
     operation.setContext({
@@ -24,7 +18,7 @@ const client = new ApolloClient({
       }
     })
   },
-  onError: error => {
+  onError: (error) => {
     const { networkError } = error
     if (networkError && networkError.result.code === 'invalid_token') {
       window.sessionStorage.removeItem('token')
@@ -33,35 +27,11 @@ const client = new ApolloClient({
   }
 })
 
-const App = () => {
-  return (
-    <Context.Provider>
-      <ApolloProvider client={client}>
-        <GlobalStyle />
-        <Logo />
-        <Router>
-          <Home path='/' />
-          <Home path='/pet/:id' />
-          <Detail path='/detail/:detailId' />
-        </Router>
-        <Context.Consumer>
-          {({ isAuth }) =>
-            isAuth ? (
-              <Router>
-                <Favs path='/favs' />
-                <User path='/user' />
-              </Router>
-            ) : (
-              <Router>
-                <NotRegisteredUser path='/favs' />
-                <NotRegisteredUser path='/user' />
-              </Router>
-            )}
-        </Context.Consumer>
-        <NavBar />
-      </ApolloProvider>
-    </Context.Provider>
-  )
-}
-
-ReactDom.render(<App />, document.getElementById('app'))
+ReactDOM.render(
+  <Context.Provider>
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
+  </Context.Provider>,
+  document.getElementById('app')
+)
