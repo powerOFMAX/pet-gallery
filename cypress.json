@@ -1,0 +1,6 @@
+{
+  "baseUrl": "https://sample-front.powerofmax.vercel.app/",
+  "chromeWebSecurity": false,
+  "viewportWidth": 500,
+  "viewportHeight": 800
+}
