@@ -1,6 +1,7 @@
 {
   "version": 2,
-  "alias": ["petgram-api-test"],
+  "alias": ["pet-gallery-api"],
+  "builds": [{ "src": "index.js", "use": "@now/node" }],
   "routes": [{
     "headers": {
         "Access-Control-Allow-Origin": "*",

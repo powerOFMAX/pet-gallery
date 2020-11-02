@@ -8,7 +8,7 @@ import { App } from './App'
 const client = new ApolloClient({
   uri:
     process.env.REACT_APP_ENDPOINT ||
-    'https://test-api-okz6z0yf7.vercel.app/graphql',
+    'https://pet-gallery-api.powerofmax.vercel.app/graphql',
   request: (operation) => {
     const token = window.sessionStorage.getItem('token')
     const authorization = token ? `Bearer ${token}` : ''
