@@ -5,9 +5,10 @@ export function useCategoriesData () {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
 
+  const url = process.env.REACT_APP_ENDPOINT ? `${process.env.REACT_APP_ENDPOINT}/categories` : 'https://pet-gallery-api.powerofmax.vercel.app/categories'
   useEffect(function () {
     setLoading(true)
-    window.fetch('https://test-api-okz6z0yf7.vercel.app/categories')
+    window.fetch(url)
       .then(res => res.json())
       .then(categories => {
         setCategoriesData(categories)
